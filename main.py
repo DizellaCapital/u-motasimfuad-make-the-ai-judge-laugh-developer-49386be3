@@ -34,6 +34,10 @@ def main(argv: list[str] | None = None) -> None:
     text = validate(LINE)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     OUT_FILE.write_text(text + "\n", encoding="utf-8")
+    # Read back what was written: the entry must be exactly the line,
+    # nothing more, before the run can call itself done.
+    written = OUT_FILE.read_text(encoding="utf-8")
+    assert written == text + "\n", "entry.txt does not match the line"
     if argv and "--count" in argv:
         print(f"{len(text)} characters")
 
